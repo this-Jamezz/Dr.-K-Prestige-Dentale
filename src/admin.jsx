@@ -56,7 +56,7 @@ function StaffDashboard() {
     <>
       <a className="skip" href="#main">Skip to dashboard</a>
       <header className="staff-header"><div className="staff-shell topbar">
-      <a className="brand" href={clinicHome}><img className="brand-logo" src="./assets/clinic-logo-mark.png" alt="" /><span>Dr. K Prestige Dentale<small>BY DR. KIRSTEN BULAONG</small></span></a>
+      <a className="brand" href={clinicHome}><img className="brand-logo" src="./assets/clinic-logo-badge.png" alt="" /><span>Dr. K Prestige Dentale<small>BY DR. KIRSTEN BULAONG</small></span></a>
       <div className="top-actions"><a href={clinicHome}>Clinic website</a><button className="button outline" id="logout" hidden>Sign out</button></div>
       </div></header>
       <main className="staff-shell staff-main" id="main">

@@ -2,7 +2,6 @@
 .staff-shell{width:min(100% - 2rem,76rem);margin-inline:auto}
 .staff-header{background:var(--panel);border-bottom:1px solid var(--hair)}
 .staff-header .brand{gap:.65rem;font-size:1.25rem}
-.staff-header .brand-logo{width:2.9rem;height:2.9rem;object-fit:cover;object-position:center;border:1px solid var(--bronze);border-radius:50%;background:#fffdf7;padding:.12rem}
 .staff-header .brand small{font-size:.65rem;letter-spacing:.11em;color:var(--ink);margin-top:.22rem}
 .topbar,.staff-heading,.panel-head,.top-actions{display:flex;justify-content:space-between;align-items:center;gap:1rem}
 .topbar{min-height:4.4rem}.top-actions{font-size:.875rem;flex-wrap:wrap}.staff-main{padding-block:2rem 4rem}
