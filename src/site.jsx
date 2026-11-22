@@ -10,7 +10,7 @@ function Hero() {
     <>
       <section className="shell hero grid">
       <div className="hero-copy"><p className="eyebrow"><span></span> DENTAL CLINIC · GUIGUINTO</p><h1>Dr. K Prestige<br /><em>Dentale</em></h1><p className="byline">By Dr. Kirsten Bulaong</p><p className="motto">Smile with Prestige, Crafted with Care in Every Detail.</p><a className="button primary" href="#booking">Book an Appointment</a></div>
-      <figure className="hero-image photo"><img src="./assets/hero.webp" width="900" height="900" fetchPriority="high" alt="Illustrative sunlit dental treatment room with a reclining chair and warm wood cabinetry" /><figcaption>Sample clinic image</figcaption></figure>
+      <figure className="hero-image photo"><img src="./assets/hero-clinic.jpg" width="900" height="900" fetchPriority="high" alt="Dentist speaking with a patient in a dental treatment room" /><figcaption>Care at Dr. K Prestige Dentale</figcaption></figure>
       </section>
     </>
   );
@@ -35,9 +35,9 @@ function Gallery() {
     <>
       <section id="work" tabIndex={-1} className="shell block"><div className="intro"><p className="eyebrow"><span></span> OUR WORK</p><h2>A closer look</h2><p>Illustrative samples for the clinic’s gallery.</p></div>
       <div className="gallery">
-      <figure><div className="photo"><img src="./assets/smile.webp" loading="lazy" width="600" height="450" alt="Illustrative close-up of an adult smile" /></div><figcaption><h3>Smile case</h3><p>Sample visual for a future consented case.</p></figcaption></figure>
-      <figure><div className="photo"><img src="./assets/detail.webp" loading="lazy" width="600" height="450" alt="Illustrative dental mirror and model on a white tray" /></div><figcaption><h3>Treatment detail</h3><p>Sample visual of dental instruments.</p></figcaption></figure>
-      <figure><div className="photo"><img src="./assets/interior.webp" loading="lazy" width="600" height="450" alt="Illustrative waiting area with warm oak and upholstered seating" /></div><figcaption><h3>Clinic interior</h3><p>Sample visual for a future clinic photo.</p></figcaption></figure>
+      <figure><div className="photo"><img src="./assets/smile-case.png" loading="lazy" width="600" height="450" alt="Dentist holding a dental model while speaking with a patient" /></div><figcaption><h3>Smile case</h3><p>Dental care explained with a model.</p></figcaption></figure>
+      <figure><div className="photo"><img src="./assets/treatment-details.png" loading="lazy" width="600" height="450" alt="Collage showing general dentistry services, including consultation, cleaning, and tooth extraction" /></div><figcaption><h3>Treatment detail</h3><p>General dentistry services.</p></figcaption></figure>
+      <figure><div className="photo"><img src="./assets/clinic-interior.png" loading="lazy" width="600" height="450" alt="Warmly lit Dr. K Prestige Dentale reception and waiting area" /></div><figcaption><h3>Clinic interior</h3><p>Welcome to Dr. K Prestige Dentale.</p></figcaption></figure>
       </div></section>
     </>
   );
@@ -47,8 +47,8 @@ function About() {
   return (
     <>
       <section id="about" tabIndex={-1} className="band"><div className="shell block split">
-      <figure className="portrait photo"><img src="./assets/portrait.webp" loading="lazy" width="600" height="650" alt="Portrait placeholder showing an anonymous dental professional in an ivory coat" /><figcaption>Portrait placeholder</figcaption></figure>
-      <div><p className="eyebrow"><span></span> ABOUT</p><h2>Meet Dr. Kirsten Bulaong</h2><p>Dr. Kirsten Bulaong leads Dr. K Prestige Dentale in Guiguinto.</p><p className="muted">An approved biography and portrait will be added here.</p><a href="#booking" className="button outline">Request an Appointment</a></div>
+      <figure className="portrait photo"><img src="./assets/dr-kirsten-bulaong.png" loading="lazy" width="600" height="650" alt="Dr. Kirsten Bulaong in her dental clinic" /><figcaption>Dr. Kirsten Bulaong</figcaption></figure>
+      <div><p className="eyebrow"><span></span> ABOUT</p><h2>Meet Dr. Kirsten Bulaong</h2><p>Dr. Kirsten Bulaong leads Dr. K Prestige Dentale in Guiguinto.</p><a href="#booking" className="button outline">Request an Appointment</a></div>
       </div></section>
     </>
   );

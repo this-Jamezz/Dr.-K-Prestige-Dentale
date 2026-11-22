@@ -27,7 +27,7 @@ export function Header() {
     }}>
       <div className="shell navbar">
         <a href="#main" className="brand">
-          <span className="monogram" aria-hidden="true">K</span>
+          <img className="brand-logo" src="./assets/clinic-logo.jpg" alt="" />
           <span>Dr. K Prestige Dentale<small>BY DR. KIRSTEN BULAONG</small></span>
         </a>
         <button className="menu" id="mobile-menu" type="button" aria-controls="navigation"

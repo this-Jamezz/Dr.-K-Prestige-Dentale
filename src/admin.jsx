@@ -44,7 +44,7 @@ function ScheduleSettings() {
 function ManageAppointment() {
   return (
     <>
-      <dialog id="manage" aria-labelledby="manage-title"><form id="manage-form"><div className="panel-head"><div><h2 id="manage-title">Manage appointment</h2><p id="manage-subtitle"></p></div><button type="button" className="button outline" id="close">Close</button></div><dl id="detail"></dl><label htmlFor="action">Action</label><select id="action" required></select><div id="reschedule" hidden><label htmlFor="move-date">New date</label><input id="move-date" type="date" /><label htmlFor="move-time">New time (Philippine time)</label><select id="move-time"></select></div><p className="form-feedback" id="manage-error" role="status"></p><button className="button primary" id="save-action">Save change</button></form></dialog>
+      <dialog id="manage" aria-labelledby="manage-title"><form id="manage-form"><div className="panel-head"><div><h2 id="manage-title">Manage appointment</h2><p id="manage-subtitle"></p></div><button type="button" className="modal-close" id="close" aria-label="Close appointment details">×</button></div><dl id="detail"></dl><label htmlFor="action">Action</label><select id="action" required></select><div id="reschedule" hidden><label htmlFor="move-date">New date</label><input id="move-date" type="date" /><label htmlFor="move-time">New time (Philippine time)</label><select id="move-time"></select></div><p className="form-feedback" id="manage-error" role="status"></p><button className="button primary" id="save-action">Save change</button></form></dialog>
     </>
   );
 }
@@ -55,7 +55,7 @@ function StaffDashboard() {
     <>
       <a className="skip" href="#main">Skip to dashboard</a>
       <header className="staff-header"><div className="staff-shell topbar">
-      <a className="brand" href="./"><span className="monogram" aria-hidden="true">K</span><span>Dr. K Prestige Dentale<small>STAFF WORKSPACE</small></span></a>
+      <a className="brand" href="./"><img className="brand-logo" src="./assets/clinic-logo.jpg" alt="" /><span>Dr. K Prestige Dentale<small>STAFF WORKSPACE</small></span></a>
       <div className="top-actions"><a href="./">Clinic website</a><button className="button outline" id="logout" hidden>Sign out</button></div>
       </div></header>
       <main className="staff-shell staff-main" id="main">
