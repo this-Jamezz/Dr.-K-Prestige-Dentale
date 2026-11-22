@@ -1,0 +1,4 @@
+window.clinicConfig = {
+  supabaseUrl: '',
+  supabasePublishableKey: ''
+};

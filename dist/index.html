@@ -6,7 +6,7 @@
 <meta name="description" content="Explore Dr. K Prestige Dentale by Dr. Kirsten Bulaong, request an appointment, and find the clinic in Guiguinto.">
 <title>Dr. K Prestige Dentale | Guiguinto</title>
 <link rel="stylesheet" href="./style.css">
-<script src="./booking.js" defer></script>
+<script src="./clinic-config.js" defer></script><script src="./scheduling.js" defer></script><script src="./booking.js" defer></script>
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
@@ -39,22 +39,22 @@
 <div><p class="eyebrow"><span></span> ABOUT</p><h2>Meet Dr. Kirsten Bulaong</h2><p>Dr. Kirsten Bulaong leads Dr. K Prestige Dentale in Guiguinto.</p><p class="muted">An approved biography and portrait will be added here.</p><a href="#booking" class="button outline">Request an Appointment</a></div>
 </div></section>
 <section id="booking" class="booking"><div class="shell block split booking-layout">
-<div><p class="eyebrow"><span></span> APPOINTMENTS</p><h2 tabindex="-1" id="booking-title">Request an Appointment</h2><p>Choose a preferred date and time in Philippine time. Send your request by email and wait for the clinic to confirm your schedule.</p><a href="tel:+639763422320">Call 0976 342 2320</a></div>
+<div><p class="eyebrow"><span></span> APPOINTMENTS</p><h2 tabindex="-1" id="booking-title">Request an Appointment</h2><p>Choose an available time in the Philippines and send your request. The clinic will contact you to confirm your schedule.</p><a href="tel:+639763422320">Call 0976 342 2320</a></div>
 <div class="form-card">
-<form id="request" hidden>
+<p id="demo-booking" class="demo-note" hidden>Demo scheduling. Use sample information only. Requests stay in this browser and the clinic does not receive them.</p><form id="request" hidden>
 <p id="progress" class="eyebrow"></p>
-<div data-step="0"><h3 tabindex="-1">Choose a service</h3><label for="service">Service</label><select id="service" required><option value="">Select an option</option><option value="not-sure">Not sure yet</option><option value="checkup">Dental Checkup (sample)</option><option value="cleaning">Professional Cleaning (sample)</option><option value="smile">Smile Consultation (sample)</option></select></div>
-<div data-step="1" hidden><h3 tabindex="-1">Choose a preferred time</h3><p>Philippine time (Asia/Manila)</p><div class="fields"><div><label for="date">Preferred date</label><input id="date" type="date" required></div><div><label for="time">Preferred time</label><input id="time" type="time" required></div></div></div>
+<div data-step="0"><h3 tabindex="-1">Choose a service</h3><label for="service">Service</label><select id="service" required><option value="">Select an option</option></select></div>
+<div data-step="1" hidden><h3 tabindex="-1">Choose a preferred time</h3><p>Philippine time (Asia/Manila)</p><div class="fields"><div><label for="date">Preferred date</label><input id="date" type="date" required></div><div><label for="time">Preferred time</label><select id="time" required><option value="">Choose a date first</option></select></div></div></div>
 <div data-step="2" hidden><h3 tabindex="-1">Contact details</h3><label for="patient">Patient name</label><input id="patient" autocomplete="name" maxlength="100" required><label for="method">How should the clinic contact you?</label><select id="method"><option value="tel">Mobile number</option><option value="email">Email</option></select><label for="reply" id="reply-label">Mobile number</label><input id="reply" type="tel" autocomplete="tel" maxlength="160" required></div>
-<div data-step="3" hidden><h3 tabindex="-1">Review your request</h3><dl id="review"></dl><p>Your email app will open with a draft. Send it there so the clinic can review your request.</p></div>
-<div data-step="4" hidden><h3 tabindex="-1">Send your email draft</h3><p>If your email app opened, send the draft to complete your request. The clinic will contact you to confirm a schedule.</p><p>If the draft didn’t open, try again or copy your request and email it to <a href="mailto:dr.kbulaong@gmail.com">dr.kbulaong@gmail.com</a>.</p><button type="button" class="button outline" id="copy">Copy request</button><textarea id="manual" aria-label="Appointment request to copy" readonly hidden></textarea></div>
+<div data-step="3" hidden><h3 tabindex="-1">Review your request</h3><dl id="review"></dl><p>The clinic will confirm availability after reviewing your request.</p></div>
+<div data-step="4" hidden><h3 tabindex="-1" id="receipt-title">Request received</h3><p id="receipt-message"></p><p id="receipt-reference"></p></div>
 <p id="status" role="status"></p>
-<div class="actions"><button id="back" type="button" class="button outline" hidden>Back</button><button id="next" class="button primary" type="submit">Continue</button></div>
+<div class="actions"><button id="retry" type="button" class="button outline" hidden>Retry</button><button id="back" type="button" class="button outline" hidden>Back</button><button id="next" class="button primary" type="submit">Continue</button></div>
 </form>
 <noscript><a href="mailto:dr.kbulaong@gmail.com?subject=Appointment%20request">Email the clinic to request an appointment</a></noscript>
 </div></div></section>
 <section id="faq" class="shell block split faq-layout"><div><p class="eyebrow"><span></span> FAQ</p><h2>Before your visit</h2></div><div>
-<details><summary>How do I book an appointment?</summary><p>Use the <a href="#booking">appointment request form</a> to prepare an email with your preferred date and time, or call the clinic. Wait for the clinic to confirm your schedule.</p></details>
+<details><summary>How do I book an appointment?</summary><p>Use the <a href="#booking">appointment request form</a> to choose a service and an available time, or call the clinic. Wait for the clinic to confirm your schedule.</p></details>
 <details><summary>What should I bring to my first visit?</summary><p>Please ask the clinic what to bring. You can mention whether you have recent dental records or a list of current medications when you call.</p></details>
 <details><summary>How do I reschedule?</summary><p>Call <a href="tel:+639763422320">0976 342 2320</a> or email the clinic with your current appointment and your preferred new time.</p></details>
 <details><summary>What are the clinic hours?</summary><p>Clinic hours are pending confirmation. Call the clinic before visiting.</p></details>
@@ -65,6 +65,6 @@
 <div class="map"><iframe title="Google Maps location of Dr. K Prestige Dentale at Sunoria Plaza" src="https://maps.google.com/maps?cid=15952478824533610506&amp;output=embed" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe><div class="map-label"><a class="button outline" href="https://maps.app.goo.gl/NPDndVVwfCviX75G9">Open in Google Maps</a></div></div>
 </div></section>
 </main>
-<footer><div class="shell footer"><div><p class="footer-name">Dr. K Prestige Dentale</p><p>By Dr. Kirsten Bulaong</p></div><nav aria-label="Footer contact links"><a href="https://maps.app.goo.gl/NPDndVVwfCviX75G9">Directions</a><a href="tel:+639763422320">Call</a><a href="mailto:dr.kbulaong@gmail.com">Email</a><a href="https://www.facebook.com/KPdentale/?rdid=hgG0v1SP0XO04m3M">Facebook</a></nav></div></footer>
+<footer><div class="shell footer"><div><p class="footer-name">Dr. K Prestige Dentale</p><p>By Dr. Kirsten Bulaong</p></div><nav aria-label="Footer contact links"><a href="./admin.html">Staff dashboard</a><a href="https://maps.app.goo.gl/NPDndVVwfCviX75G9">Directions</a><a href="tel:+639763422320">Call</a><a href="mailto:dr.kbulaong@gmail.com">Email</a><a href="https://www.facebook.com/KPdentale/?rdid=hgG0v1SP0XO04m3M">Facebook</a></nav></div></footer>
 </body>
 </html>

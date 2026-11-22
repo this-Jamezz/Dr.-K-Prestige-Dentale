@@ -24,145 +24,178 @@ document.addEventListener('keydown', (event) => {
   }
 });
 
-const form = document.querySelector('#request');
-const panels = [...form.querySelectorAll('[data-step]')];
-const field = (id) => document.getElementById(id);
-const progress = field('progress');
-const back = field('back');
-const next = field('next');
-const status = field('status');
-const service = field('service');
-const date = field('date');
-const time = field('time');
-const patient = field('patient');
-const method = field('method');
-const reply = field('reply');
-const manual = field('manual');
-const clinicEmail = 'dr.kbulaong@gmail.com';
-const zone = 'Asia/Manila';
-let step = 0;
-let draft = '';
 
-function todayInManila() {
-  return new Intl.DateTimeFormat('en-CA', {timeZone: zone}).format(new Date());
+const form = document.querySelector('#request');
+const field = id => document.getElementById(id);
+const panels = [...form.querySelectorAll('[data-step]')];
+const {service,date,time,patient,method,reply,progress,back,next,status,retry} =
+  Object.fromEntries(['service','date','time','patient','method','reply','progress','back','next','status','retry'].map(id => [id,field(id)]));
+let step = 0;
+let loadVersion = 0;
+let busy = false;
+let payload;
+let retryAction;
+
+function message(text, action) {
+  status.textContent = text;
+  retryAction = action;
+  retry.hidden = !action;
 }
 
 function show(index, focus = true) {
   step = index;
-  panels.forEach((panel, i) => {
+  panels.forEach((panel,i) => {
     panel.hidden = i !== index;
-    panel.querySelectorAll('input, select').forEach((control) => {
-      control.disabled = i !== index;
-    });
+    panel.querySelectorAll('input,select').forEach(control => { control.disabled = i !== index; });
   });
-  progress.textContent = index === 4 ? 'EMAIL HANDOFF' : 'STEP ' + (index + 1) + ' OF 4';
-  back.hidden = index === 0;
-  next.textContent = ['Continue', 'Continue', 'Review request', 'Open email draft', 'Try email again'][index];
-  status.textContent = '';
-  manual.hidden = true;
-  date.min = todayInManila();
+  progress.textContent = index === 4 ? 'APPOINTMENT REQUEST' : 'STEP ' + (index+1) + ' OF 4';
+  next.textContent = ['Continue','Continue','Review request',clinic.demo ? 'Send demo request' : 'Send request','Start another request'][index];
+  back.hidden = index === 0 || index === 4;
+  next.disabled = index === 1 && !time.value;
+  message('');
   if (focus) panels[index].querySelector('h3').focus();
 }
 
-function appointmentDate() {
-  return new Date(date.value + 'T' + time.value + ':00+08:00');
+function option(label,value) {
+  return new Option(label,value);
 }
 
-function validate() {
-  time.setCustomValidity(date.value && time.value && appointmentDate() <= new Date()
-    ? 'Choose a future time in the Philippines.' : '');
-  patient.setCustomValidity(patient.value && !patient.value.trim() ? 'Enter the patient name.' : '');
-  const digits = reply.value.replace(/\D/g, '');
-  const mobileValid = /^(?:09\d{9}|639\d{9})$/.test(digits) && /^\+?[0-9 ().-]+$/.test(reply.value.trim());
-  reply.setCustomValidity(method.value === 'tel' && reply.value && !mobileValid
-    ? 'Enter a Philippine mobile number, such as 0912 345 6789.' : '');
+async function loadServices() {
+  next.disabled = true;
+  message('Loading services…');
+  try {
+    const items = await clinic.services();
+    service.replaceChildren(option('Select an option',''),...items.map(item => option(item.name,item.id)));
+    next.disabled = false;
+    message('');
+  } catch (error) {
+    message(error.message,loadServices);
+  }
 }
 
-function updateReview() {
-  const selected = service.selectedOptions[0].textContent;
-  const preferred = new Intl.DateTimeFormat('en-PH', {
-    dateStyle: 'long', timeStyle: 'short', timeZone: zone
-  }).format(appointmentDate()) + ' (Philippine time)';
-  const entries = [
-    ['Service', selected],
-    ['Preferred date and time', preferred],
-    ['Patient name', patient.value.trim()],
-    [method.value === 'tel' ? 'Mobile number' : 'Email', reply.value.trim()]
+async function loadSlots() {
+  const version = ++loadVersion;
+  const selected = time.value;
+  next.disabled = true;
+  time.replaceChildren(option(date.value ? 'Loading times…' : 'Choose a date first',''));
+  if (!date.value || !date.checkValidity()) {
+    time.replaceChildren(option('Choose a valid date first',''));
+    message(date.value ? 'Choose a date within the next 90 days.' : '');
+    return;
+  }
+  message('Checking availability…');
+  try {
+    const slots = await clinic.slots(service.value,date.value);
+    if (version !== loadVersion || step !== 1) return;
+    time.replaceChildren(option(slots.length ? 'Select a time' : 'No available times',''),
+      ...slots.map(slot => option(clinic.display(slot,{timeStyle:'short'}),slot)));
+    if (slots.includes(selected)) time.value = selected;
+    next.disabled = !time.value;
+    message(slots.length ? '' : 'No available times on this date. Try another day.');
+  } catch (error) {
+    if (version !== loadVersion || step !== 1) return;
+    time.replaceChildren(option('Times unavailable',''));
+    message(error.message,loadSlots);
+  }
+}
+
+function review() {
+  const rows = [
+    ['Service',service.selectedOptions[0].textContent],
+    ['Date and time',clinic.display(time.value) + ' (Philippine time)'],
+    ['Patient name',patient.value.trim()],
+    [method.value === 'tel' ? 'Mobile number' : 'Email',reply.value.trim()]
   ];
-  field('review').replaceChildren(...entries.flatMap(([label, value]) => {
+  field('review').replaceChildren(...rows.flatMap(([label,value]) => {
     const term = document.createElement('dt');
     const description = document.createElement('dd');
     term.textContent = label;
     description.textContent = value;
-    return [term, description];
+    return [term,description];
   }));
-  draft = 'Hello Dr. K Prestige Dentale,\r\n\r\nI would like to request an appointment.\r\n\r\n'
-    + entries.map(([label, value]) => label + ': ' + value).join('\r\n')
-    + '\r\n\r\nPlease let me know if this time is available. Thank you.';
-  manual.value = draft;
+  const values = {service_id:service.value,start:time.value,patient:patient.value.trim(),method:method.value,contact:reply.value.trim()};
+  if (!payload || Object.keys(values).some(key => values[key] !== payload[key])) payload = {id:crypto.randomUUID(),...values};
 }
 
-function openDraft() {
-  if (appointmentDate() <= new Date()) {
-    show(1);
-    status.textContent = 'That time has passed. Choose a new preferred time.';
-    return;
+async function send() {
+  busy = true;
+  next.disabled = true;
+  back.disabled = true;
+  message(clinic.demo ? 'Saving demo request…' : 'Sending request…');
+  try {
+    const reference = await clinic.submit(payload);
+    field('receipt-title').textContent = clinic.demo ? 'Demo request saved' : 'Request received';
+    field('receipt-message').textContent = clinic.demo
+      ? 'View this sample in the staff dashboard in this browser.'
+      : 'The clinic will contact you to confirm your schedule.';
+    field('receipt-reference').textContent = 'Reference ' + reference;
+    show(4);
+  } catch (error) {
+    if (/no longer available/i.test(error.message)) {
+      show(1);
+      await loadSlots();
+      if (!retryAction) message('That time is no longer available. Choose another time.');
+    } else {
+      message(error.message,send);
+    }
+  } finally {
+    busy = false;
+    back.disabled = false;
+    next.disabled = step === 1 && !time.value;
   }
-  show(4);
-  window.location.href = 'mailto:' + clinicEmail + '?subject=Appointment%20request&body=' + encodeURIComponent(draft);
 }
 
-method.addEventListener('change', () => {
-  const email = method.value === 'email';
+function reset() {
+  form.reset();
+  reply.type = 'tel';
+  reply.autocomplete = 'tel';
+  field('reply-label').textContent = 'Mobile number';
+  time.replaceChildren(option('Choose a date first',''));
+  payload = undefined;
+  show(0);
+}
+
+form.noValidate = true;
+form.addEventListener('submit',event => {
+  event.preventDefault();
+  if (busy || next.disabled) return;
+  if (step === 4) return reset();
+  if (step === 3) return void send();
+  const digits = reply.value.replace(/\D/g,'');
+  patient.setCustomValidity(patient.value && !patient.value.trim() ? 'Enter the patient name.' : '');
+  reply.setCustomValidity(method.value === 'tel' && reply.value && !(/^(?:09\d{9}|639\d{9})$/.test(digits) && /^\+?[0-9 ().-]+$/.test(reply.value.trim()))
+    ? 'Enter a Philippine mobile number.' : '');
+  if (!form.reportValidity()) return message('Check the highlighted field before continuing.');
+  if (step === 2) review();
+  show(step+1);
+  if (step === 1) void loadSlots();
+});
+date.addEventListener('change',loadSlots);
+time.addEventListener('change',() => { next.disabled = !time.value; });
+method.addEventListener('change',() => {
   reply.value = '';
   reply.type = method.value;
   reply.autocomplete = method.value;
-  field('reply-label').textContent = email ? 'Email address' : 'Mobile number';
-  validate();
+  field('reply-label').textContent = method.value === 'email' ? 'Email address' : 'Mobile number';
 });
-
-form.noValidate = true;
-form.addEventListener('submit', (event) => {
-  event.preventDefault();
-  date.min = todayInManila();
-  validate();
-  if (!form.reportValidity()) {
-    status.textContent = 'Check the highlighted field before continuing.';
-    return;
-  }
-  if (step >= 3) {
-    openDraft();
-    return;
-  }
-  if (step === 2) updateReview();
-  show(step + 1);
+retry.addEventListener('click',() => retryAction?.());
+back.addEventListener('click',() => {
+  show(step-1);
+  if (step === 1) void loadSlots();
 });
-
-back.addEventListener('click', () => show(step - 1));
-document.querySelectorAll('[data-service]').forEach((link) => {
-  link.addEventListener('click', () => {
-    service.value = link.dataset.service;
-    show(0, false);
-    field('booking-title').focus({preventScroll: true});
+document.querySelectorAll('[data-service]').forEach(link => {
+  link.addEventListener('click',() => {
+    if (busy) return;
+    show(0,false);
+    service.value = [...service.options].some(o => o.value === link.dataset.service) ? link.dataset.service : '';
+    next.disabled = service.options.length <= 1;
+    if (next.disabled) void loadServices();
+    field('booking-title').focus({preventScroll:true});
   });
 });
-
-field('copy').addEventListener('click', async () => {
-  const copy = field('copy');
-  copy.disabled = true;
-  status.textContent = 'Copying…';
-  try {
-    await navigator.clipboard.writeText(draft);
-    status.textContent = 'Request copied. Paste it into an email to the clinic.';
-  } catch {
-    manual.hidden = false;
-    manual.focus();
-    manual.select();
-    status.textContent = 'Copy the selected text and paste it into an email to the clinic.';
-  } finally {
-    copy.disabled = false;
-  }
-});
-
-show(0, false);
+date.min = clinic.day();
+date.max = clinic.addDays(date.min,90);
+field('demo-booking').hidden = !clinic.demo;
+show(0,false);
 form.hidden = false;
+void loadServices();
