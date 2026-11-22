@@ -1,0 +1,9 @@
+@layer theme, components, utilities;
+@import "tailwindcss/theme.css" layer(theme);
+@import "tailwindcss/utilities.css" layer(utilities);
+@theme {
+  --color-clinic-ivory: #F5F4EB;
+  --color-clinic-gold: #DDB44D;
+  --color-clinic-bronze: #8B601D;
+  --color-clinic-ink: #302A20;
+}
