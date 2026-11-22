@@ -50,13 +50,14 @@ function ManageAppointment() {
 }
 
 function StaffDashboard() {
+  const clinicHome = document.getElementById('app').dataset.clinicHome ?? './';
   useEffect(() => { startDashboard(); }, []);
   return (
     <>
       <a className="skip" href="#main">Skip to dashboard</a>
       <header className="staff-header"><div className="staff-shell topbar">
-      <a className="brand" href="./"><span className="monogram" aria-hidden="true">K</span><span>Dr. K Prestige Dentale<small>STAFF WORKSPACE</small></span></a>
-      <div className="top-actions"><a href="./">Clinic website</a><button className="button outline" id="logout" hidden>Sign out</button></div>
+      <a className="brand" href={clinicHome}><span className="monogram" aria-hidden="true">K</span><span>Dr. K Prestige Dentale<small>STAFF WORKSPACE</small></span></a>
+      <div className="top-actions"><a href={clinicHome}>Clinic website</a><button className="button outline" id="logout" hidden>Sign out</button></div>
       </div></header>
       <main className="staff-shell staff-main" id="main">
       <div className="staff-heading"><div><p className="eyebrow"><span></span> CLINIC OPERATIONS</p><h1>Appointments dashboard</h1><p id="today"></p></div><button type="button" className="button outline" id="refresh" hidden>Refresh</button></div>
