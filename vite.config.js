@@ -27,7 +27,8 @@ export default defineConfig(({ mode }) => {
     rollupOptions: {
       input: {
         site: resolve(import.meta.dirname, 'index.html'),
-        admin: resolve(import.meta.dirname, 'admin.html'),
+        admin: resolve(import.meta.dirname, 'admin/index.html'),
+        legacyAdmin: resolve(import.meta.dirname, 'admin.html'),
       },
     },
   },
