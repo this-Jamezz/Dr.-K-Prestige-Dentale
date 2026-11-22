@@ -104,7 +104,7 @@ function Contact() {
 function Footer() {
   return (
     <>
-      <footer><div className="shell footer"><div><p className="footer-name">Dr. K Prestige Dentale</p><p>By Dr. Kirsten Bulaong</p></div><nav aria-label="Footer contact links"><a href="./admin/">Staff dashboard</a><a href="https://maps.app.goo.gl/NPDndVVwfCviX75G9">Directions</a><a href="tel:+639763422320">Call</a><a href="mailto:dr.kbulaong@gmail.com">Email</a><a href="https://www.facebook.com/KPdentale/?rdid=hgG0v1SP0XO04m3M">Facebook</a></nav></div></footer>
+      <footer><div className="shell footer"><div><p className="footer-name">Dr. K Prestige Dentale</p><p>By Dr. Kirsten Bulaong</p><p>Developed by: James Ian Antonio and Lheriza Miranda</p></div><nav aria-label="Footer contact links"><a href="./admin/">Staff dashboard</a><a href="https://maps.app.goo.gl/NPDndVVwfCviX75G9">Directions</a><a href="tel:+639763422320">Call</a><a href="mailto:dr.kbulaong@gmail.com">Email</a><a href="https://www.facebook.com/KPdentale/?rdid=hgG0v1SP0XO04m3M">Facebook</a></nav></div></footer>
     </>
   );
 }
